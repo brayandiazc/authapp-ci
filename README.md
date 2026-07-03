@@ -2,6 +2,11 @@
 
 Pipeline de integración continua para una aplicación Java utilizando Jenkins, Maven y SonarQube. El proyecto analiza el código automáticamente con cada cambio en GitHub, compila, ejecuta pruebas y envía los resultados a SonarQube para revisión de calidad.
 
+![Build](https://img.shields.io/badge/build-Jenkins-D24939?logo=jenkins&logoColor=white)
+![Java](https://img.shields.io/badge/Java-21-007396?logo=openjdk&logoColor=white)
+![Quality](https://img.shields.io/badge/quality-SonarQube-4E9BCD?logo=sonarqube&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
 ## 🧱 Composición del Proyecto
 
 - 🔧 **Java 21** — Código fuente de la app (`/authapp`)
@@ -9,6 +14,8 @@ Pipeline de integración continua para una aplicación Java utilizando Jenkins, 
 - 🚀 **Jenkins (Docker)** — Automatiza el proceso CI/CD
 - 📊 **SonarQube (Docker)** — Análisis estático de código
 - 🐳 **Docker Compose** — Orquestación de servicios
+
+> ℹ️ La app `authapp` es un **demo educativo** de autenticación en memoria. Su único fin es dar algo real que compilar y testear en el pipeline; no es un sistema de autenticación de producción. Ver [`docs/architecture/auth.md`](docs/architecture/auth.md).
 
 ## 🖼️ Vista Previa
 
@@ -99,7 +106,7 @@ pipeline {
               mvn sonar:sonar \
                 -Dsonar.projectKey=authapp \
                 -Dsonar.host.url=http://sonarqube:9000 \
-                -Dsonar.login=tu_token_aqui
+                -Dsonar.login=$SONAR_TOKEN
             '''
           }
         }
@@ -109,12 +116,18 @@ pipeline {
 }
 ```
 
-🔐 **Importante**: genera tu token en SonarQube:
-`http://localhost:9000 > My Account > Security > Generate Tokens`
+🔐 **Importante**: genera tu token en SonarQube (`http://localhost:9000 > My Account > Security > Generate Tokens`) y **nunca lo hardcodees** en el `Jenkinsfile`. Guárdalo como credencial de Jenkins (_Manage Jenkins → Credentials_, tipo _Secret text_) y referéncialo. Ver [`docs/conventions/secrets.md`](docs/conventions/secrets.md).
 
 ## 🧪 Pruebas
 
-El sistema ejecuta automáticamente `mvn clean test` dentro del pipeline CI.
+El sistema ejecuta automáticamente `mvn clean test` dentro del pipeline CI. Para ejecutarlas en local:
+
+```bash
+cd authapp
+mvn clean test
+```
+
+Convenciones de testing en [`docs/conventions/testing.md`](docs/conventions/testing.md).
 
 ## 🛑 Parar el entorno
 
@@ -135,14 +148,35 @@ docker compose down -v --remove-orphans
 - [ ] Notificaciones Slack
 - [ ] Despliegue automático (CD)
 
+Roadmap detallado en [`docs/product/roadmap.md`](docs/product/roadmap.md).
+
+## 📚 Documentación
+
+Toda la documentación vive en [`docs/`](docs/README.md):
+
+| Documento                                                                | Responde a                        |
+| ------------------------------------------------------------------------ | --------------------------------- |
+| [`docs/architecture/architecture.md`](docs/architecture/architecture.md) | ¿Cómo está construido el pipeline? |
+| [`docs/architecture/stack.md`](docs/architecture/stack.md)               | ¿Con qué tecnologías?             |
+| [`docs/architecture/auth.md`](docs/architecture/auth.md)                 | ¿Qué hace la app de ejemplo?      |
+| [`docs/conventions/`](docs/conventions/README.md)                        | ¿Cómo trabajamos en este repo?    |
+| [`docs/decisions/`](docs/decisions/README.md)                            | ¿Por qué tomamos cada decisión?   |
+| [`docs/product/roadmap.md`](docs/product/roadmap.md)                     | ¿Hacia dónde va?                  |
+
 ## 🖇️ Contribuye
 
-```bash
-# Fork → Rama → Cambios → Pull Request
-```
+Lee la [Guía de Contribución](CONTRIBUTING.md) para conocer el flujo de trabajo (Git Flow), el formato de commits (Conventional Commits) y el proceso de Pull Requests. Al participar, aceptas el [Código de Conducta](CODE_OF_CONDUCT.md).
+
+## 🔒 Seguridad
+
+¿Encontraste una vulnerabilidad? Revisa la [Política de Seguridad](SECURITY.md) antes de reportarla.
+
+## 🏷️ Versionado
+
+Seguimos [Semantic Versioning](https://semver.org/lang/es/). Consulta las [versiones publicadas](https://github.com/brayandiazc/authapp-ci/tags) y el [CHANGELOG](CHANGELOG.md).
 
 ## 📄 Licencia
 
-MIT — ver [LICENSE](LICENSE.md)
+MIT — ver [LICENSE](LICENSE)
 
 ⌨️ con ❤️ por [Brayan Diaz C](https://github.com/brayandiazc)

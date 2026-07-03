@@ -1,0 +1,47 @@
+# Auto-etiquetado de Pull Requests según los archivos modificados.
+# Reglas ajustadas a la estructura de AuthApp CI (Java/Maven + Docker + Jenkins).
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "**/*.md"
+      - "docs/**/*"
+      - ".github/ISSUE_TEMPLATE/**/*"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+
+java:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "authapp/src/**/*.java"
+      - "authapp/pom.xml"
+
+testing:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "authapp/src/test/**/*"
+
+config:
+  - changed-files:
+    - any-glob-to-any-file:
+      - ".env*"
+      - ".editorconfig"
+      - "*.properties"
+
+ci-cd:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "Jenkinsfile"
+      - "jenkins/**/*"
+      - "docker-compose*"
+      - ".github/workflows/**/*"
+      - ".github/dependabot.yml"
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "authapp/pom.xml"
+
+github:
+  - changed-files:
+    - any-glob-to-any-file:
+      - ".github/**/*"

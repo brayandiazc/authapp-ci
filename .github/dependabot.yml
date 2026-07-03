@@ -1,0 +1,35 @@
+# ==============================================================================
+# Configuración de Dependabot
+# ==============================================================================
+# Dependabot revisa tus dependencias y abre PRs para actualizarlas.
+# Documentación: https://docs.github.com/code-security/dependabot/dependabot-version-updates
+# ==============================================================================
+
+version: 2
+
+updates:
+  # Dependencias de Maven (la app Java vive en /authapp)
+  - package-ecosystem: "maven"
+    directory: "/authapp"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # Imágenes base de los Dockerfile (Jenkins)
+  - package-ecosystem: "docker"
+    directory: "/jenkins"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "ci-cd"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
